@@ -81,7 +81,7 @@ public class ChangeMaker {
      * @param args all arguments of the main function - none are required.
      */
     public static void main(String[] args) {
-        int[] packs = new int[]{2, 4, 6, 9};
+        int[] packs = new int[]{0, 2, 4, 6, 9};
         printAllCombinations(13, packs);
     }
 }
