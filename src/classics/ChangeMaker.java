@@ -9,7 +9,8 @@ import java.util.ArrayList;
  * order to buy the intended number of soda bottles.
  *
  * @author Cassio
- * @version 1.0
+ * @version 1.1
+ * @since 1.0
  */
 public class ChangeMaker {
 
