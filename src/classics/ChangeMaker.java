@@ -3,11 +3,23 @@ package classics;
 import java.util.ArrayList;
 
 /**
+ * Basic code for a change maker. Exactly as asked by DropBox. Instead of coins, the problem states for soda bottles. If
+ * you have different packs of soda bottles (1 bottle, 3 bottles, 6 bottles, 7 bottles, and so on) and you want to buy a
+ * certain number of bottles (say, 13 bottles), the output of this code should return all the packs you need to buy in
+ * order to buy the intended number of soda bottles.
+ *
  * @author Cassio
  * @version 1.0
  */
 public class ChangeMaker {
 
+    /**
+     * Hook for recursive calls of the algorithm.
+     *
+     * @param sodasNumber the intended number of sodas you want to buy.
+     * @param packs       all possible packs of soda bottles you might buy.
+     * @return an array list of lists containing all the unique combinations of packs that return sodasNumber.
+     */
     public static ArrayList<ArrayList<Integer>> sodas(int sodasNumber, int[] packs) {
         ArrayList<ArrayList<Integer>> allCombos = new ArrayList<ArrayList<Integer>>();
         allCombos.addAll(checkSodas(sodasNumber, packs, new ArrayList<Integer>(), 0));
@@ -42,6 +54,12 @@ public class ChangeMaker {
         }
     }
 
+    /**
+     * Simple function that prints all combinations of soda packs that return sodasNumber.
+     *
+     * @param sodasNumber the intended number of sodas you want to buy.
+     * @param packs       all possible packs of soda bottles you might buy.
+     */
     public static void printAllCombinations(int sodasNumber, int[] packs) {
         ArrayList<ArrayList<Integer>> sodasCombo = sodas(sodasNumber, packs);
         System.out.print("[");
@@ -56,6 +74,11 @@ public class ChangeMaker {
         System.out.println("]");
     }
 
+    /**
+     * Simple main function that works as a proof-of-concept for the interviewer.
+     *
+     * @param args all arguments of the main function - none are required.
+     */
     public static void main(String[] args) {
         int[] packs = new int[]{2, 4, 6, 9};
         printAllCombinations(13, packs);
