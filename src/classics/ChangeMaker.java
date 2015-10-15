@@ -4,10 +4,7 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 /**
- * Basic code for a change maker. Exactly as asked by DropBox. Instead of coins, the problem states for soda bottles. If
- * you have different packs of soda bottles (1 bottle, 3 bottles, 6 bottles, 7 bottles, and so on) and you want to buy a
- * certain number of bottles (say, 13 bottles), the output of this code should return all the packs you need to buy in
- * order to buy the intended number of soda bottles.
+ * Basic code for a change maker. Exactly as asked by DropBox. Instead of coins, the problem states for soda bottles. If you have different packs of soda bottles (1 bottle, 3 bottles, 6 bottles, 7 bottles, and so on) and you want to buy a certain number of bottles (say, 13 bottles), the output of this code should return all the packs you need to buy in order to buy the intended number of soda bottles.
  *
  * @author Cassio
  * @version 1.1
@@ -54,7 +51,7 @@ public class ChangeMaker {
             else {
 
                 // Second check
-                if(currentIndex >= packs.length)
+                if (currentIndex >= packs.length)
                     return partialCombos;
 
                 else {
@@ -101,7 +98,7 @@ public class ChangeMaker {
      * @param args all arguments of the main function - none are required.
      */
     public static void main(String[] args) {
-        int[] packs = new int[]{3,4,6};
+        int[] packs = new int[]{3, 4, 6};
         printAllCombinations(13, packs);
     }
 }
