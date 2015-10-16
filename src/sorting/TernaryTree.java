@@ -49,24 +49,23 @@ public class TernaryTree {
         currentNode.setValue(expression.substring(firstDelimiter, secondDelimiter));
     }
 
+    public String treeFrom(Node node) {
+        String branch = node.getValue();
+        if (node.getLeft().getValue() != null) {
+            branch += " ? (" + treeFrom(node.getLeft()) + " : " + treeFrom(node.getRight()) + ")";
+        }
+        return branch;
+    }
+
     public String toString() {
-        if (root == null)
+        if (root == null || root.getValue() == null)
             return "null";
-        String ternaryExpression = "";
-        Node currentNode = root;
-        ternaryExpression += currentNode.getValue();
-        ternaryExpression += " ? (";
-        currentNode = currentNode.getLeft();
-        ternaryExpression += currentNode.getValue();
-        ternaryExpression += " : ";
-        currentNode = currentNode.getParent().getRight();
-        ternaryExpression += currentNode.getValue();
-        ternaryExpression += ")";
-        return ternaryExpression;
+        else
+            return treeFrom(root);
     }
 
     public static void main(String[] args) {
-        TernaryTree tree = new TernaryTree("Sim ? Hein : Nao");
+        TernaryTree tree = new TernaryTree("Sim ? Hein ? Vai : VaiVai : Nao");
         System.out.println(tree.toString());
     }
 
