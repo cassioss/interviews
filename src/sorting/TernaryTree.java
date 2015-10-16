@@ -3,8 +3,9 @@ package sorting;
 import java.util.Stack;
 
 /**
- * @author Cassio
- * @version 1.0
+ * @author Cassio dos Santos Sousa
+ * @version 1.1
+ * @since 1.0
  */
 public class TernaryTree {
 
@@ -14,18 +15,22 @@ public class TernaryTree {
         this.root = root;
     }
 
+    public TernaryTree(String expression) {
+        createTreeFrom(expression);
+    }
+
     public Node getRoot() {
         return root;
     }
 
-    public TernaryTree createTreeFromExpression(String expression) {
-        String[] splitBySpace = expression.split(" ");
+    public TernaryTree createTreeFrom(String expression) {
+
+        String[] splitBySpace = expression.split("\\s+");
         Node root = new Node(splitBySpace[0]);
-        TernaryTree tree = new TernaryTree(root);
 
-        Node leftReference = root.left;
+        Node leftReference = root.getLeft();
 
-        Stack<Node> allRightNodes = new Stack<Node>();
+        Stack<Node> allRightNodes = new Stack<>();
 
         boolean leftTrueRightFalse = false;
 
@@ -38,42 +43,22 @@ public class TernaryTree {
                     leftTrueRightFalse = false;     // Inserts on a right node
                 } else {
                     if (leftTrueRightFalse) {
-                        leftReference.left = new Node(splitBySpace[i]);
-                        allRightNodes.push(leftReference.right);
-                        leftReference = leftReference.left;
+                        leftReference.insertOnLeft(splitBySpace[i]);
+                        allRightNodes.push(leftReference.getRight());
+                        leftReference = leftReference.getLeft();
                     } else {
                         Node right = allRightNodes.pop();
-                        right.value = splitBySpace[i];
+                        right.setValue(splitBySpace[i]);
                         leftReference = right;
                     }
                 }
             }
         }
 
-        return tree;
+        return new TernaryTree(root);
     }
 
-
-    public boolean validValue(String value) {
-        return !value.isEmpty() && !value.equals("?") && !value.equals(":");
-    }
-
-
-    private class Node {
-        private String value;
-        private Node left, right;
-
-        public Node(String value) {
-            this.value = value;
-        }
-
-        public void insertOnLeft(Node leftNode) {
-            this.left = leftNode;
-        }
-
-        public void insertOnRight(Node rightNode) {
-            this.right = rightNode;
-        }
+    public static void main(String[] args) {
 
     }
 

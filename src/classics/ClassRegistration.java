@@ -28,7 +28,7 @@ public class ClassRegistration {
             this.capacity = capacity;
             this.registrationDeadLine = registrationDeadLine;
             this.dropDeadLine = dropDeadline;
-            registeredStudents = new HashSet<Student>();
+            registeredStudents = new HashSet<>();
             classMap.put(code, this);
         }
 

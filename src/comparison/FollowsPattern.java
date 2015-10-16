@@ -10,26 +10,20 @@ public class FollowsPattern {
 
     /**
      * Tells if a string follows the same pattern as a given array.
-     * <p/>
-     * As an interview question: consider making the following questions::
-     * <p/>
-     * (1) Do I need to check if the input String has an invalid substring? (e.g. am I going to check if there is a
-     * double space in the original string or similar?)
-     *
-     * @param beingChecked a string being checked, parsed by blank spaces.
-     * @param pattern      an array that contains a certain pattern.
-     * @return <em>true</em> if the string follows the same pattern (e.g.: beingChecked = "cat dog dog cat", pattern =
-     * [a, b, b, a]).
      */
     public static boolean follows(String beingChecked, String[] pattern) {
-        String[] split = beingChecked.split(" ");
-        if (split.length != pattern.length)
-            return false;
-        HashMap<String, String> patternAssociation = new HashMap<String, String>();
-        for (int i = 0; i < split.length; i++) {
-            if (!patternAssociation.containsKey(pattern[i]))
-                patternAssociation.put(pattern[i], split[i]);
-            else if (!patternAssociation.get(pattern[i]).equals(split[i]))
+
+        // If the string has a different number of words, the method might bring false positives.
+        String[] split = beingChecked.split("\\s+");
+        return split.length == pattern.length && _follows(split, pattern);
+    }
+
+    public static boolean _follows(String[] splitChecked, String[] pattern) {
+        HashMap<String, String> association = new HashMap<>();
+        for (int i = 0; i < splitChecked.length; i++) {
+            if (!association.containsKey(pattern[i]))
+                association.put(pattern[i], splitChecked[i]);
+            else if (!association.get(pattern[i]).equals(splitChecked[i]))
                 return false;
         }
         return true;
@@ -37,9 +31,9 @@ public class FollowsPattern {
 
     public static void main(String[] args) {
         String[] pattern = {"a", "b", "b", "a"};
-        String beingCheckedFirst = "dog cat cat dog";
-        String beingCheckedSecond = "dog cat dog cat";
-        System.out.println(follows(beingCheckedFirst, pattern));
-        System.out.println(follows(beingCheckedSecond, pattern));
+        String checkFirst = "dog cat cat dog";
+        String checkSecond = "dog cat dog cat";
+        System.out.println(follows(checkFirst, pattern));
+        System.out.println(!follows(checkSecond, pattern));
     }
 }
