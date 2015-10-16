@@ -1,5 +1,7 @@
 package classics;
 
+import java.util.Random;
+
 /**
  * Exponential function between two integers.
  *
@@ -8,84 +10,69 @@ package classics;
  */
 public class Exponential {
 
-    private static boolean isEdgeCase(int baseOrPower) {
-        return baseOrPower == 0 || baseOrPower == 1;
-    }
-
-    private static double edgeCaseForBaseWhere(boolean isBaseZero) {
-        if (isBaseZero)
-            return 0.0;
-        else
-            return 1.0;
-    }
-
-    private static double edgeCaseForPowerWhere(boolean isPowerZero, int base) {
-        if (isPowerZero)
-            return 1.0;
-        else
-            return 1.0 * base;
-    }
-
     public static double exponential(int base, int power) {
 
-        // Checking edge cases, assuming 0^0 = 0
+        // Base = 0, power < 0 will bring division by zero.
+        if (base == 0)
+            return 0.0;
 
-        if (isEdgeCase(base))
-            return edgeCaseForBaseWhere(base == 0);
+        if (power < 0)
+            return 1.0 / _exponential(base, -power);
+        else
+            return _exponential(base, power);
+    }
 
-        // Edge cases for power comes after
 
-        if (isEdgeCase(power))
-            return edgeCaseForPowerWhere(power == 0, base);
-
-        // Variable to check whether it should multiply or divide
-
-        boolean isPowerPositive = power >= 0;
-
-        // Get positive power as variable
-
-        int positivePower = power;
-        if (!isPowerPositive)
-            positivePower *= -1;
-
-        // Implementation
-
+    /**
+     * Calculates exponential in O(log(|power|)), since, after k iterations, the iterator will be |power|/2^k.
+     */
+    private static double _exponential(int base, int positivePower) {
         double currentPowerOf2 = base * 1.0;
         double oddBitProduct = 1.0;
 
-        while (positivePower > 1) {
+        while (positivePower > 0) {
             if (positivePower % 2 != 0)
                 oddBitProduct *= currentPowerOf2;
             currentPowerOf2 *= currentPowerOf2;
             positivePower /= 2;
         }
 
-        double integerResult = oddBitProduct * currentPowerOf2;
-
-        if (!isPowerPositive)
-            integerResult = 1.0 / integerResult;
-
-        return integerResult;
+        return oddBitProduct;
     }
 
-    private static void printExponential(int base, int power) {
-        if (power >= 0)
-            System.out.printf("(%d) ^ (%d) = %d\n", base, power, (int) exponential(base, power));
+    private static void checkExponential(int base, int power, double expected) {
+        if (Math.abs(exponential(base, power) - expected) < 0.0001)
+            System.out.println("true");
         else
-            System.out.printf("(%d) ^ (%d) = %f\n", base, power, exponential(base, power));
+            System.out.printf("false: exponential(%d, %d) = %f, expected = %f\n",
+                    base, power, exponential(base, power), expected);
     }
 
     public static void main(String[] args) {
-        printExponential(2, 5);
-        printExponential(2, 4);
-        printExponential(2, 3);
-        printExponential(2, 2);
-        printExponential(2, 1);
-        printExponential(2, 0);
-        printExponential(2, -1);
-        printExponential(2, -2);
-        printExponential(2, -3);
-        printExponential(2, -4);
+
+        // Sanity checks
+
+        checkExponential(2, 5, 32.0);
+        checkExponential(2, -2, 0.25);
+
+        // Check edge cases
+
+        checkExponential(0, 0, 0.0);
+        checkExponential(0, -1, 0.0);
+        checkExponential(0, 1, 0.0);
+        checkExponential(1, 0, 1.0);
+
+        // Check if it works like Math.pow(base, power) with random values
+
+        Random random = new Random();
+        random.setSeed(3);
+
+        for (int i = 0; i < 30; i++) {
+            int base = random.nextInt(20);
+            int exponent = random.nextInt(10);
+            checkExponential(base, exponent, Math.pow(base, exponent));
+        }
+
     }
 
 }
