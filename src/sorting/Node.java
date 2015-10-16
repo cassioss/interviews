@@ -6,18 +6,19 @@ package sorting;
  */
 public class Node {
     private String value;
-    private Node left, right;
+    private Node left, right, parent;
 
-    public Node(String value) {
+    public Node(String value, Node parent) {
         this.value = value;
+        this.parent = parent;
     }
 
     public void insertOnLeft(String value) {
-        this.left = new Node(value);
+        this.left = new Node(value, this);
     }
 
     public void insertOnRight(String value) {
-        this.left = new Node(value);
+        this.left = new Node(value, this);
     }
 
     public String getValue() {
@@ -34,6 +35,10 @@ public class Node {
 
     public Node getRight() {
         return right;
+    }
+
+    public Node getParent() {
+        return parent;
     }
 
 }
