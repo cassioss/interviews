@@ -13,27 +13,27 @@ public class Node {
         this.parent = parent;
     }
 
-    public void insertOnLeft(String value) {
-        this.left = new Node(value, this);
-    }
-
-    public void insertOnRight(String value) {
-        this.left = new Node(value, this);
-    }
-
-    public String getValue() {
-        return value;
+    public Node(Node parent) {
+        this.parent = parent;
     }
 
     public void setValue(String value) {
         this.value = value;
     }
 
+    public String getValue() {
+        return value;
+    }
+
     public Node getLeft() {
+        if (left == null)
+            left = new Node(this);
         return left;
     }
 
     public Node getRight() {
+        if (right == null)
+            right = new Node(this);
         return right;
     }
 

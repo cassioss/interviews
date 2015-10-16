@@ -16,50 +16,58 @@ public class TernaryTree {
     }
 
     public TernaryTree(String expression) {
-        createTreeFrom(expression);
+        ternaryTree(expression.replaceAll("\\s+", ""));
     }
 
     public Node getRoot() {
         return root;
     }
 
-    public TernaryTree createTreeFrom(String expression) {
+    public void ternaryTree(String expression) {
 
-        String[] splitBySpace = expression.split("\\s+");
-        Node root = new Node(splitBySpace[0]);
+        int firstDelimiter = 0;
+        int secondDelimiter;
 
-        Node leftReference = root.getLeft();
-
+        root = new Node(null);          // No parent for the root
+        Node currentNode = root;
         Stack<Node> allRightNodes = new Stack<>();
 
-        boolean leftTrueRightFalse = false;
-
-        for (int i = 1; i < splitBySpace.length; i++) {
-
-            if (splitBySpace[i].equals("?")) {
-                leftTrueRightFalse = true;          // Inserts on a left node
-            } else {
-                if (splitBySpace[i].equals(":")) {
-                    leftTrueRightFalse = false;     // Inserts on a right node
-                } else {
-                    if (leftTrueRightFalse) {
-                        leftReference.insertOnLeft(splitBySpace[i]);
-                        allRightNodes.push(leftReference.getRight());
-                        leftReference = leftReference.getLeft();
-                    } else {
-                        Node right = allRightNodes.pop();
-                        right.setValue(splitBySpace[i]);
-                        leftReference = right;
-                    }
-                }
+        for (secondDelimiter = 0; secondDelimiter < expression.length(); secondDelimiter++) {
+            char checked = expression.charAt(secondDelimiter);
+            if (checked == '?') {
+                currentNode.setValue(expression.substring(firstDelimiter, secondDelimiter));
+                allRightNodes.push(currentNode.getRight());
+                currentNode = currentNode.getLeft();
+                firstDelimiter = secondDelimiter + 1;
+            } else if (checked == ':') {
+                currentNode.setValue(expression.substring(firstDelimiter, secondDelimiter));
+                currentNode = allRightNodes.pop();
+                firstDelimiter = secondDelimiter + 1;
             }
         }
 
-        return new TernaryTree(root);
+        currentNode.setValue(expression.substring(firstDelimiter, secondDelimiter));
+    }
+
+    public String toString() {
+        if (root == null)
+            return "null";
+        String ternaryExpression = "";
+        Node currentNode = root;
+        ternaryExpression += currentNode.getValue();
+        ternaryExpression += " ? (";
+        currentNode = currentNode.getLeft();
+        ternaryExpression += currentNode.getValue();
+        ternaryExpression += " : ";
+        currentNode = currentNode.getParent().getRight();
+        ternaryExpression += currentNode.getValue();
+        ternaryExpression += ")";
+        return ternaryExpression;
     }
 
     public static void main(String[] args) {
-
+        TernaryTree tree = new TernaryTree("Sim ? Hein : Nao");
+        System.out.println(tree.toString());
     }
 
 }
