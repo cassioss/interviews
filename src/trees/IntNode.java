@@ -6,8 +6,7 @@ package trees;
  */
 public class IntNode {
 
-    protected int value;
-
+    protected Integer value;
     protected IntNode left, right;
 
 }
