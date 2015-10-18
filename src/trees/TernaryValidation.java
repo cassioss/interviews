@@ -1,20 +1,16 @@
-package sorting;
+package trees;
 
 /**
+ * Follow-up: see if the expression needs to be ternary (to have interrogation and colon) to be valid. In this case,
+ * having neither of them but having at least an atom is considered to be valid.
+ *
  * @author Cassio dos Santos Sousa
  * @version 1.0
  */
 public class TernaryValidation {
 
     public static boolean isTernary(String expression) {
-        return notEdgeCase(expression) && _isTernary(expression.replaceAll("\\s+", ""));
-    }
-
-    /**
-     * Null strings cannot be checked, and empty strings are false positives.
-     */
-    private static boolean notEdgeCase(String expression) {
-        return expression != null && !expression.equals("");
+        return expression != null && _isTernary(expression.replaceAll("\\s+", ""));
     }
 
     private static boolean _isTernary(String expression) {
@@ -22,22 +18,20 @@ public class TernaryValidation {
         int lengthOfPrevious = 0;
         for (int i = 0; i < expression.length(); i++) {
             char beingChecked = expression.charAt(i);
-            if (notColonOrInt(beingChecked))
+            if (beingChecked != ':' && beingChecked != '?')
                 lengthOfPrevious++;
             else {
                 // Colons and interrogations should not be together
                 if (lengthOfPrevious == 0)
                     return false;
+                lengthOfPrevious = 0;
+                if (beingChecked == '?')
+                    intMinusColons++;
                 else {
-                    lengthOfPrevious = 0;
-                    if (beingChecked == '?')
-                        intMinusColons++;
-                    else {
-                        // Colons go after the interrogations
-                        intMinusColons--;
-                        if (intMinusColons < 0)
-                            return false;
-                    }
+                    // Colons go after the interrogations
+                    intMinusColons--;
+                    if (intMinusColons < 0)
+                        return false;
                 }
             }
         }
@@ -45,9 +39,6 @@ public class TernaryValidation {
         return intMinusColons == 0 && lengthOfPrevious > 0;
     }
 
-    private static boolean notColonOrInt(char someChar) {
-        return someChar != ':' && someChar != '?';
-    }
 
     public static void confirmIf(String expression, boolean expected) {
         System.out.println(isTernary(expression) == expected);
@@ -55,6 +46,8 @@ public class TernaryValidation {
 
     public static void main(String[] args) {
         confirmIf(null, false);
+        confirmIf("", false);
+        confirmIf("a", true);
         confirmIf("a?b:c", true);
         confirmIf("a?b?c:d:e", true);
         confirmIf("a?b:c?d:e", true);

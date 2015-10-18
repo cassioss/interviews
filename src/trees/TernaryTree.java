@@ -1,4 +1,4 @@
-package sorting;
+package trees;
 
 import java.util.Stack;
 
@@ -11,24 +11,19 @@ public class TernaryTree {
 
     private Node root;
 
-    public TernaryTree(Node root) {
-        this.root = root;
-    }
-
     public TernaryTree(String expression) {
         ternaryTree(expression.replaceAll("\\s+", ""));
     }
 
-    public Node getRoot() {
-        return root;
+    public void ternaryTree(String expression) {
+        recursiveTernaryTree(expression);
     }
 
-    public void ternaryTree(String expression) {
-
+    public void stackTree(String expression) {
         int firstDelimiter = 0;
         int secondDelimiter;
 
-        root = new Node(null);          // No parent for the root
+        root = new Node();
         Node currentNode = root;
         Stack<Node> allRightNodes = new Stack<>();
 
@@ -36,8 +31,8 @@ public class TernaryTree {
             char checked = expression.charAt(secondDelimiter);
             if (checked == '?') {
                 currentNode.setValue(expression.substring(firstDelimiter, secondDelimiter));
-                allRightNodes.push(currentNode.getRight());
-                currentNode = currentNode.getLeft();
+                allRightNodes.push(currentNode.setAndGetRight());
+                currentNode = currentNode.setAndGetLeft();
                 firstDelimiter = secondDelimiter + 1;
             } else if (checked == ':') {
                 currentNode.setValue(expression.substring(firstDelimiter, secondDelimiter));
@@ -47,14 +42,29 @@ public class TernaryTree {
         }
 
         currentNode.setValue(expression.substring(firstDelimiter, secondDelimiter));
+
     }
 
-    public String treeFrom(Node node) {
-        String branch = node.getValue();
-        if (node.getLeft().getValue() != null) {
-            branch += " ? (" + treeFrom(node.getLeft()) + " : " + treeFrom(node.getRight()) + ")";
+    public void recursiveTernaryTree(String expression) {
+        root = new Node();
+        _recursiveTernaryTree(expression, 0, root);
+    }
+
+    public int _recursiveTernaryTree(String s, int i, Node currentNode) {
+        int j = i;
+        while (j < s.length() && s.charAt(j) != '?' && s.charAt(j) != ':') j += 1;
+
+        currentNode.setValue(s.substring(i, j));
+
+        if (j == s.length() || s.charAt(j) == ':') {
+            return j;
         }
-        return branch;
+
+        currentNode.left = new Node();
+        j = _recursiveTernaryTree(s, j + 1, currentNode.left);
+        currentNode.right = new Node();
+        j = _recursiveTernaryTree(s, j + 1, currentNode.right);
+        return j;
     }
 
     public String toString() {
@@ -64,8 +74,17 @@ public class TernaryTree {
             return treeFrom(root);
     }
 
+    private String treeFrom(Node node) {
+        String branch = node.getValue();
+        if (node.getLeft() != null) {
+            branch += " ? " + treeFrom(node.getLeft()) + " : " + treeFrom(node.getRight());
+            branch = "(" + branch + ")";
+        }
+        return branch;
+    }
+
     public static void main(String[] args) {
-        TernaryTree tree = new TernaryTree("Sim ? Hein ? Vai : VaiVai : Nao");
+        TernaryTree tree = new TernaryTree("Sim ? Hein ? Vai : VaiVai ? Sim : NaoNao : Nao");
         System.out.println(tree.toString());
     }
 
