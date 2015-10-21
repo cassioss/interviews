@@ -24,12 +24,24 @@ public class BinaryTree {
                     current.left = new IntNode();
                     current.left.value = unsortedArray[it];
                     _binaryTree(unsortedArray, it + 1, current);
+                } else if (current.right == null) {
+                    current.right = new IntNode();
+                    current.right.value = current.value;
+                    current.value = current.left.value;
+                    current.left.value = unsortedArray[it];
+                    _binaryTree(unsortedArray, it + 1, current);
                 } else {
-                    _binaryTree(unsortedArray, it + 1, current.left);
+                    _binaryTree(unsortedArray, it, current.left);
                 }
             } else {
                 if (current.right == null) {
                     current.right = new IntNode();
+                    current.right.value = unsortedArray[it];
+                    _binaryTree(unsortedArray, it + 1, current);
+                } else if (current.left == null) {
+                    current.left = new IntNode();
+                    current.left.value = current.value;
+                    current.value = current.right.value;
                     current.right.value = unsortedArray[it];
                     _binaryTree(unsortedArray, it + 1, current);
                 } else {
