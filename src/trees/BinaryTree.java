@@ -13,34 +13,32 @@ public class BinaryTree {
     private IntNode root;
 
     public BinaryTree(int[] unsortedArray) {
-        root = new IntNode();
-        Set<Integer> arrayToSet = new HashSet<>();
-        for (int number : unsortedArray) {
-            arrayToSet.add(number);
-        }
-        Integer[] noDuplicates = arrayToSet.toArray(new Integer[arrayToSet.size()]);
-        Arrays.sort(noDuplicates);
-        _binaryTree(noDuplicates, root);
+        root = _binaryTree(order(noDuplicates(unsortedArray)));
     }
 
-    public void _binaryTree(Integer[] sortedArray, IntNode current) {
-        int length = sortedArray.length;
-        if (length == 1) {
-            current.value = sortedArray[0];
-        } else if (length == 2 || length == 3) {
-            current.value = sortedArray[1];
-            current.left = new IntNode();
-            current.left.value = sortedArray[0];
-            if (length == 3) {
-                current.right = new IntNode();
-                current.right.value = sortedArray[2];
-            }
-        } else {
-            current.value = sortedArray[length / 2];
-            current.left = new IntNode();
-            current.right = new IntNode();
-            _binaryTree(Arrays.copyOfRange(sortedArray, 0, length / 2), current.left);
-            _binaryTree(Arrays.copyOfRange(sortedArray, length / 2 + 1, length), current.right);
+    private Integer[] order(Integer[] intArray) {
+        Arrays.sort(intArray);
+        return intArray;
+    }
+
+    private Integer[] noDuplicates(int[] intArray) {
+        Set<Integer> arrayToSet = new HashSet<>();
+        for (int number : intArray) {
+            arrayToSet.add(number);
+        }
+        return arrayToSet.toArray(new Integer[arrayToSet.size()]);
+    }
+
+    public IntNode _binaryTree(Integer[] sortedArray) {
+        if (sortedArray == null || sortedArray.length == 0)
+            return null;
+        else {
+            int length = sortedArray.length;
+            IntNode node = new IntNode();
+            node.value = sortedArray[length / 2];
+            node.left = _binaryTree(Arrays.copyOfRange(sortedArray, 0, length / 2));
+            node.right = _binaryTree(Arrays.copyOfRange(sortedArray, length / 2 + 1, length));
+            return node;
         }
     }
 
@@ -49,7 +47,7 @@ public class BinaryTree {
     }
 
     private String searchFor(int number, IntNode currentNode) {
-        if (currentNode == null || currentNode.value == null)
+        if (currentNode == null)
             return "null (it is not here)";
         String current = currentNode.value.toString();
         if (number == currentNode.value)
