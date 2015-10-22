@@ -1,5 +1,9 @@
 package trees;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author Cassio dos Santos Sousa
  * @version 1.0
@@ -10,44 +14,33 @@ public class BinaryTree {
 
     public BinaryTree(int[] unsortedArray) {
         root = new IntNode();
-        _binaryTree(unsortedArray, 0, root);
+        Set<Integer> arrayToSet = new HashSet<>();
+        for (int number : unsortedArray) {
+            arrayToSet.add(number);
+        }
+        Integer[] noDuplicates = arrayToSet.toArray(new Integer[arrayToSet.size()]);
+        Arrays.sort(noDuplicates);
+        _binaryTree(noDuplicates, root);
     }
 
-    public void _binaryTree(int[] unsortedArray, int it, IntNode current) {
-        if (it == unsortedArray.length) return;
-        if (current.value == null) {
-            current.value = unsortedArray[it];
-            _binaryTree(unsortedArray, it + 1, current);
-        } else {
-            if (unsortedArray[it] < current.value) {
-                if (current.left == null) {
-                    current.left = new IntNode();
-                    current.left.value = unsortedArray[it];
-                    _binaryTree(unsortedArray, it + 1, current);
-                } else if (current.right == null) {
-                    current.right = new IntNode();
-                    current.right.value = current.value;
-                    current.value = current.left.value;
-                    current.left.value = unsortedArray[it];
-                    _binaryTree(unsortedArray, it + 1, current);
-                } else {
-                    _binaryTree(unsortedArray, it, current.left);
-                }
-            } else {
-                if (current.right == null) {
-                    current.right = new IntNode();
-                    current.right.value = unsortedArray[it];
-                    _binaryTree(unsortedArray, it + 1, current);
-                } else if (current.left == null) {
-                    current.left = new IntNode();
-                    current.left.value = current.value;
-                    current.value = current.right.value;
-                    current.right.value = unsortedArray[it];
-                    _binaryTree(unsortedArray, it + 1, current);
-                } else {
-                    _binaryTree(unsortedArray, it, current.right);
-                }
+    public void _binaryTree(Integer[] sortedArray, IntNode current) {
+        int length = sortedArray.length;
+        if (length == 1) {
+            current.value = sortedArray[0];
+        } else if (length == 2 || length == 3) {
+            current.value = sortedArray[1];
+            current.left = new IntNode();
+            current.left.value = sortedArray[0];
+            if (length == 3) {
+                current.right = new IntNode();
+                current.right.value = sortedArray[2];
             }
+        } else {
+            current.value = sortedArray[length / 2];
+            current.left = new IntNode();
+            current.right = new IntNode();
+            _binaryTree(Arrays.copyOfRange(sortedArray, 0, length / 2), current.left);
+            _binaryTree(Arrays.copyOfRange(sortedArray, length / 2 + 1, length), current.right);
         }
     }
 
@@ -67,7 +60,7 @@ public class BinaryTree {
     }
 
     public static void main(String[] args) {
-        int[] unsorted = new int[]{10, 2, 12, 34, 20};
+        int[] unsorted = new int[]{10, 2, 12, 34, 20, 14, 27, 27};
         BinaryTree tree = new BinaryTree(unsorted);
         System.out.println(tree.toString());
     }
