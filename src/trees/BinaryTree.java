@@ -32,14 +32,12 @@ public class BinaryTree {
     public IntNode _binaryTree(Integer[] sortedArray) {
         if (sortedArray == null || sortedArray.length == 0)
             return null;
-        else {
-            int length = sortedArray.length;
-            IntNode node = new IntNode();
-            node.value = sortedArray[length / 2];
-            node.left = _binaryTree(Arrays.copyOfRange(sortedArray, 0, length / 2));
-            node.right = _binaryTree(Arrays.copyOfRange(sortedArray, length / 2 + 1, length));
-            return node;
-        }
+        int length = sortedArray.length;
+        IntNode node = new IntNode();
+        node.value = sortedArray[length / 2];
+        node.left = _binaryTree(Arrays.copyOfRange(sortedArray, 0, length / 2));
+        node.right = _binaryTree(Arrays.copyOfRange(sortedArray, length / 2 + 1, length));
+        return node;
     }
 
     public String binaryTreeSearch(int number) {

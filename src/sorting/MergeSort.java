@@ -12,45 +12,38 @@ public class MergeSort {
         int length = unsortedArray.length;
         if (length == 1)
             return unsortedArray;
-        else {
-            if (length == 2) {
-                int[] sortedArray = new int[unsortedArray.length];
-                if (unsortedArray[0] > unsortedArray[1]) {
-                    sortedArray[0] = unsortedArray[1];
-                    sortedArray[1] = unsortedArray[0];
-                } else {
-                    sortedArray[0] = unsortedArray[0];
-                    sortedArray[1] = unsortedArray[1];
-                }
-                return sortedArray;
-            } else {
-                int[] firstHalf = Arrays.copyOfRange(unsortedArray, 0, length / 2);
-                int[] secondHalf = Arrays.copyOfRange(unsortedArray, length / 2, length);
-                int[] firstSorted = mergeSort(firstHalf);
-                int[] secondSorted = mergeSort(secondHalf);
-                if (firstHalf[firstHalf.length - 1] < secondHalf[0])
-                    return merge(firstHalf, secondHalf);
-                else
-                    return merge(secondHalf, firstHalf);
-            }
-        }
+        int[] firstHalf = Arrays.copyOfRange(unsortedArray, 0, length / 2);
+        int[] secondHalf = Arrays.copyOfRange(unsortedArray, length / 2, length);
+        int[] firstOrdered = mergeSort(firstHalf);
+        int[] secondOrdered = mergeSort(secondHalf);
+        return merge(firstOrdered, secondOrdered);
     }
 
-    public static int[] merge(int[] firstHalf, int[] secondHalf) {
+    private static int[] merge(int[] firstHalf, int[] secondHalf) {
         int firstLength = firstHalf.length;
         int secondLength = secondHalf.length;
         int[] merged = new int[firstLength + secondLength];
-        int i;
-        for (i = 0; i < firstLength; i++)
-            merged[i] = firstHalf[i];
+        int i = 0, j = 0;
+        while (i != firstLength && j != secondLength) {
+            if (firstHalf[i] <= secondHalf[j])
+                merged[i + j] = firstHalf[i++];
+            else
+                merged[i + j] = secondHalf[j++];
+        }
 
-        for (int j = 0; j < secondLength; j++)
-            merged[i++] = secondHalf[j];
+        if (i == firstLength && j != secondLength) {
+            while (j != secondLength)
+                merged[i + j] = secondHalf[j++];
+        } else {
+            while (i != firstLength)
+                merged[i + j] = firstHalf[i++];
+        }
+
         return merged;
     }
 
     public static void main(String[] args) {
-        int[] unsorted = new int[]{10, 2, 12, 34, 20, 14, 27, 90};
+        int[] unsorted = new int[]{10, 2, 12, 34, 20, 14, 27, 90, 86, 10, 93, 14};
         int[] sorted = mergeSort(unsorted);
         System.out.println(Arrays.toString(sorted));
     }
