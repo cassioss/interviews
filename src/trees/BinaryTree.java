@@ -44,6 +44,22 @@ public class BinaryTree {
         }
     }
 
+    public String binaryTreeSearch(int number) {
+        return searchFor(number, root);
+    }
+
+    private String searchFor(int number, IntNode currentNode) {
+        if (currentNode == null || currentNode.value == null)
+            return "null (it is not here)";
+        String current = currentNode.value.toString();
+        if (number == currentNode.value)
+            return current;
+        else if (number < currentNode.value)
+            return current + " -> " + searchFor(number, currentNode.left);
+        else
+            return current + " -> " + searchFor(number, currentNode.right);
+    }
+
     public String toString() {
         return treeFrom(root);
     }
@@ -53,16 +69,19 @@ public class BinaryTree {
             return "empty";
         String nodeValues = node.value.toString();
         if (node.left != null || node.right != null) {
-            nodeValues += " --> left: " + treeFrom(node.left) + ", right: " + treeFrom(node.right);
+            nodeValues += " --> " + treeFrom(node.left) + ", " + treeFrom(node.right);
             nodeValues = "(" + nodeValues + ")";
         }
         return nodeValues;
     }
 
     public static void main(String[] args) {
-        int[] unsorted = new int[]{10, 2, 12, 34, 20, 14, 27, 27};
+        int[] unsorted = new int[]{10, 2, 12, 34, 20, 14, 27, 8, 15, 45, 32, 18, 43, 6, 23};
         BinaryTree tree = new BinaryTree(unsorted);
         System.out.println(tree.toString());
+        System.out.println(tree.binaryTreeSearch(34));
+        System.out.println(tree.binaryTreeSearch(32));
+        System.out.println(tree.binaryTreeSearch(21));
     }
 
 }
