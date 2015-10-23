@@ -8,6 +8,9 @@ import java.util.Arrays;
  */
 public class MergeSort {
 
+    /**
+     * MergeSort algorithm. Since the total time T(n) is twice the time of the algorithm for two arrays (T(n/2)) plus the merging operation of all the n elements, the algorithm is O(n log(n)).
+     */
     public static int[] mergeSort(int[] unsortedArray) {
         int length = unsortedArray.length;
         if (length == 1)
@@ -19,6 +22,9 @@ public class MergeSort {
         return merge(firstOrdered, secondOrdered);
     }
 
+    /**
+     * Merges two arrays into one such that the resulting one picks up the smallest values first. This algorithm is O(n), being n the total number of elements in both arrays.
+     */
     private static int[] merge(int[] firstHalf, int[] secondHalf) {
         int firstLength = firstHalf.length;
         int secondLength = secondHalf.length;
