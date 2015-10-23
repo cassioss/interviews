@@ -24,6 +24,7 @@ public class MergeSort {
         int secondLength = secondHalf.length;
         int[] merged = new int[firstLength + secondLength];
         int i = 0, j = 0;
+
         while (i != firstLength && j != secondLength) {
             if (firstHalf[i] <= secondHalf[j])
                 merged[i + j] = firstHalf[i++];
@@ -31,7 +32,7 @@ public class MergeSort {
                 merged[i + j] = secondHalf[j++];
         }
 
-        if (i == firstLength && j != secondLength) {
+        if (i == firstLength) {
             while (j != secondLength)
                 merged[i + j] = secondHalf[j++];
         } else {

@@ -76,7 +76,7 @@ public class BinaryTree {
         BinaryTree tree = new BinaryTree(unsorted);
         System.out.println(tree.toString());
         System.out.println(tree.binaryTreeSearch(34));
-        System.out.println(tree.binaryTreeSearch(32));
+        System.out.println(tree.binaryTreeSearch(15));
         System.out.println(tree.binaryTreeSearch(21));
     }
 
