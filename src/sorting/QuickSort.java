@@ -3,6 +3,8 @@ package sorting;
 import java.util.Arrays;
 
 /**
+ * QuickSort algorithm.
+ *
  * @author Cassio dos Santos Sousa
  * @version 1.0
  */
@@ -13,38 +15,44 @@ public class QuickSort {
     }
 
     private static void quickSort(int[] unsortedArray, int leftPivot, int rightPivot) {
-        int reference = unsortedArray[rightPivot];
-        if (leftPivot != rightPivot) {
-            int leftIterator = leftPivot;
-            int rightIterator = rightPivot - 1;
-            if (leftIterator == rightIterator) {
-                if (unsortedArray[leftIterator] > unsortedArray[rightPivot])
-                    swap(unsortedArray, leftIterator, rightPivot);
-            } else {
-                while (leftIterator < rightIterator) {
-                    while (unsortedArray[leftIterator] < reference)
-                        leftIterator++;
-                    while (unsortedArray[rightIterator] > reference)
-                        rightIterator--;
-                    if (leftIterator < rightIterator)
-                        swap(unsortedArray, leftIterator, rightIterator);
+        if (leftPivot < rightPivot) {
+            int iterLeft = leftPivot;
+            int iterRight = rightPivot - 1;
+            int reference = unsortedArray[rightPivot];
+            while (iterLeft < iterRight) {
+                if (unsortedArray[iterLeft] > reference) {
+                    while (unsortedArray[iterRight] >= reference && iterLeft < iterRight)
+                        iterRight--;
+                } else if (unsortedArray[iterRight] < reference) {
+                    while (unsortedArray[iterLeft] <= reference && iterLeft < iterRight)
+                        iterLeft++;
                 }
-                if (reference < unsortedArray[leftIterator])
-                    swap(unsortedArray, leftIterator, rightPivot);
-                quickSort(unsortedArray, leftPivot, leftIterator);
-                quickSort(unsortedArray, rightIterator, rightPivot);
+                if (iterLeft < iterRight) {
+                    if (unsortedArray[iterLeft] > unsortedArray[iterRight])
+                        swap(unsortedArray, iterLeft, iterRight);
+                    iterLeft++;
+                }
             }
+            if (unsortedArray[iterLeft] > reference)
+                swap(unsortedArray, iterLeft, rightPivot);
+            System.out.println("Pivot: " + reference);
+            System.out.println(Arrays.toString(unsortedArray));
+            quickSort(unsortedArray, leftPivot, iterLeft);
+            quickSort(unsortedArray, iterRight + 1, rightPivot);
         }
     }
 
     private static void swap(int[] array, int leftPivot, int rightPivot) {
-        int valueToTheLeft = array[leftPivot];
-        array[leftPivot] = array[rightPivot];
-        array[rightPivot] = valueToTheLeft;
+        if (leftPivot < rightPivot) {
+            int valueToTheLeft = array[leftPivot];
+            array[leftPivot] = array[rightPivot];
+            array[rightPivot] = valueToTheLeft;
+            System.out.println("Changed: " + array[leftPivot] + " " + array[rightPivot]);
+        }
     }
 
     public static void main(String[] args) {
-        int[] unsorted = new int[]{10, 2, 12, 34, 20, 14, 27, 90, 86, 10, 93, 14};
+        int[] unsorted = new int[]{12, 12, 12, 12};
         quickSort(unsorted);
         System.out.println(Arrays.toString(unsorted));
     }
