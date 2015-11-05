@@ -52,7 +52,7 @@ public class QuickSort {
     }
 
     public static void main(String[] args) {
-        int[] unsorted = new int[]{12, 12, 12, 12};
+        int[] unsorted = new int[]{10, 2, 12, 34, 20, 14, 27, 90, 86, 93, 15, 120, 50, 14, 28};
         quickSort(unsorted);
         System.out.println(Arrays.toString(unsorted));
     }
