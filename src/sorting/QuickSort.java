@@ -20,25 +20,23 @@ public class QuickSort {
             int iterRight = rightPivot - 1;
             int reference = unsortedArray[rightPivot];
             while (iterLeft < iterRight) {
-                if (unsortedArray[iterLeft] > reference) {
-                    while (unsortedArray[iterRight] >= reference && iterLeft < iterRight)
-                        iterRight--;
-                } else if (unsortedArray[iterRight] < reference) {
-                    while (unsortedArray[iterLeft] <= reference && iterLeft < iterRight)
-                        iterLeft++;
+                if (unsortedArray[iterRight] > reference) {
+                    iterRight--;
+                    continue;
                 }
-                if (iterLeft < iterRight) {
-                    if (unsortedArray[iterLeft] > unsortedArray[iterRight])
-                        swap(unsortedArray, iterLeft, iterRight);
+                if (unsortedArray[iterLeft] < reference) {
                     iterLeft++;
+                    continue;
                 }
+                swap(unsortedArray, iterLeft, iterRight);
             }
-            if (unsortedArray[iterLeft] > reference)
+            if (unsortedArray[iterRight] > reference)
                 swap(unsortedArray, iterLeft, rightPivot);
             System.out.println("Pivot: " + reference);
             System.out.println(Arrays.toString(unsortedArray));
             quickSort(unsortedArray, leftPivot, iterLeft);
             quickSort(unsortedArray, iterRight + 1, rightPivot);
+
         }
     }
 
