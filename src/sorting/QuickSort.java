@@ -16,37 +16,36 @@ public class QuickSort {
 
     private static void quickSort(int[] unsortedArray, int leftPivot, int rightPivot) {
         if (leftPivot < rightPivot) {
-            int iterLeft = leftPivot;
-            int iterRight = rightPivot - 1;
-            int reference = unsortedArray[rightPivot];
-            while (iterLeft < iterRight) {
-                if (unsortedArray[iterRight] > reference) {
-                    iterRight--;
-                    continue;
-                }
-                if (unsortedArray[iterLeft] < reference) {
-                    iterLeft++;
-                    continue;
-                }
-                swap(unsortedArray, iterLeft, iterRight);
-            }
-            if (unsortedArray[iterRight] > reference)
-                swap(unsortedArray, iterLeft, rightPivot);
-            System.out.println("Pivot: " + reference);
-            System.out.println(Arrays.toString(unsortedArray));
-            quickSort(unsortedArray, leftPivot, iterLeft);
-            quickSort(unsortedArray, iterRight + 1, rightPivot);
-
+            int partition = partition(unsortedArray, leftPivot, rightPivot);
+            quickSort(unsortedArray, leftPivot, partition - 1);
+            quickSort(unsortedArray, partition + 1, rightPivot);
         }
     }
 
-    private static void swap(int[] array, int leftPivot, int rightPivot) {
-        if (leftPivot < rightPivot) {
-            int valueToTheLeft = array[leftPivot];
-            array[leftPivot] = array[rightPivot];
-            array[rightPivot] = valueToTheLeft;
-            System.out.println("Changed: " + array[leftPivot] + " " + array[rightPivot]);
+    private static int partition(int[] unsortedArray, int leftPivot, int rightPivot) {
+        int iterLeft = leftPivot;
+        int iterRight = rightPivot - 1;
+        int reference = unsortedArray[rightPivot];
+        while (iterLeft < iterRight) {
+            if (unsortedArray[iterRight] > reference) {
+                iterRight--;
+                continue;
+            }
+            if (unsortedArray[iterLeft] < reference) {
+                iterLeft++;
+                continue;
+            }
+            swap(unsortedArray, iterLeft, iterRight);
         }
+        if (unsortedArray[iterRight] > reference)
+            swap(unsortedArray, iterLeft, rightPivot);
+        return iterLeft;
+    }
+
+    private static void swap(int[] array, int leftPivot, int rightPivot) {
+        int valueToTheLeft = array[leftPivot];
+        array[leftPivot] = array[rightPivot];
+        array[rightPivot] = valueToTheLeft;
     }
 
     public static void main(String[] args) {
